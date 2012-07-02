@@ -24,7 +24,7 @@ WHAT TO DO:
             input name="myListElement" data-base="count"/
             input name="myListElement"/
     
-            button type="submit"
+            input type="submit"
     
         /form
     
