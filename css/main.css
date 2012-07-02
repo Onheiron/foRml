@@ -1,0 +1,78 @@
+html{
+
+	background:#eeeeee;
+
+	width:1000px;
+
+	margin:auto;
+
+}
+
+form{
+		
+	position:relative;
+
+	left:300px;
+
+}
+
+input{
+
+	display:block;
+
+	width:300px;
+	font-size:17px;
+	border:1px solid #cccccc;
+	border-radius:5px;
+
+}
+
+select{
+
+	display:block;
+
+	width:300px;
+	font-size:17px;
+	border:1px solid #cccccc;
+	border-radius:5px;
+
+}
+
+fieldset{
+
+	border:none;
+
+}
+
+legend{
+
+	font-size:18px;
+	color:#777777;
+
+}
+
+label{
+
+	font-size:25px;
+
+	color:#999999;
+
+}
+
+input[type=submit]{
+
+	font-size:20px;
+
+	border:1px solid #bbbbbb;
+
+	background:#eeeeee;
+
+	border-radius:5px;
+
+	padding:5px;
+
+	color:#666666;
+
+	cursor:pointer;
+
+}
