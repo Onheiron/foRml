@@ -24,6 +24,8 @@ WHAT TO DO:
             input name="myListElement" data-base="count"/
             input name="myListElement"/
     
+            button type="submit"
+    
         /form
     
 - Configure your DB editing the php/config.xml file with hostname, user, password / DB name, Table name
