@@ -9,7 +9,7 @@ WHAT TO DO:
 
 - Write your html form in this format:
 
-        form name="xmlRootTagName"
+        form name="xmlRootTagName" data-detect="true"
     
             input name="myFirstElementTagName" data-base="value"/
             input name="mySecondElementTagName" data-base="value"/
