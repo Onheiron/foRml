@@ -1,6 +1,13 @@
 <?php
 
+	$config = simplexml_load_file('../config.xml');
+	
+	mysql_connect($config->data_base->myHost, $config->data_base->myUser, $config->data_base->myPassword) or die(mysql_error());
+	mysql_select_db($config->data_base->myDatabase_name) or die(mysql_error());
+
 	function arrayToXML($array,$parent,$xml=null){
+	
+		$index = 0;
 
 		if($xml == null){
 
@@ -35,8 +42,10 @@
 			}
 
 		}else{
+		
+			$index = ($xml->$parent->count())-1;
 
-			$xml->$parent = $array;
+			$xml->$parent->$index = $array;
 
 		}
 
@@ -44,8 +53,20 @@
 
 	}
 
-	//$xml = arrayToXML($_POST['datas'],$_POST['formName']);
+	$xml = arrayToXML($_POST['datas'],$_POST['formName']);
+	
+	$path = '../'.$config->myXML_directory_path;
+	
+	mkdir($path.'/');
+	
+	mkdir($path.'/'.$_POST['formName'].'/');
+	
+	$path = $path.'/'.$_POST['formName'].'/'.$_POST['keys']['key'].'.xml';
+	
+	$handler = fopen($path,'w');
+	
+	fwrite($handler,$xml->asXML());
 
-	echo json_encode($_POST['datas']);
+	echo $xml->asXML();
 
 ?>

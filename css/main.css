@@ -4,13 +4,17 @@ html{
 
 	width:1000px;
 
-	margin:auto;
+	margin-left:auto;
+	
+	margin-right:auto;
 
 }
 
 form{
 		
 	position:relative;
+	
+	width:300px;
 
 	left:300px;
 
@@ -41,6 +45,14 @@ select{
 fieldset{
 
 	border:none;
+	
+	border-top:1px solid #cccccc;
+
+}
+
+fieldset[name=myLibrary]{
+
+	border-top:2px solid #bbbbbb;
 
 }
 
