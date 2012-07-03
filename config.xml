@@ -4,13 +4,13 @@
 
 	<data_base>
 	
-		<myHost>localhost</myHost>
-		<myUser>root</myUser>
-		<myPassword>root</myPassword>
-		<myDatabase_name>foRml_DB</myDatabase_name>
+		<myHost></myHost>
+		<myUser></myUser>
+		<myPassword></myPassword>
+		<myDatabase_name></myDatabase_name>
 	
 	</data_base>
 	
-	<myXML_directory_path>myXMLDir</myXML_directory_path>
+	<myXML_directory_path></myXML_directory_path>
 	
 </config>
