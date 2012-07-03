@@ -56,13 +56,13 @@ function getSQLParams(json){
 		
 		if($(this).attr('data-base') == 'value'){
 		
-			json['value'].push($(this).val());
+			json['value'].push($(this).attr('name')+":"+$(this).val());
 		
 		}else if($(this).attr('data-base') == 'count'){
 		
 			count = $("[name=" + $(this).attr('name') + "]").length;
 			
-			json['count'].push(count);
+			json['count'].push($(this).attr('name')+":"+count);
 		
 		}
 	

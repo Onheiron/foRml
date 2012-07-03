@@ -54,12 +54,78 @@
 	}
 
 	$xml = arrayToXML($_POST['datas'],$_POST['formName']);
+
+	$table_exists = mysql_query("SELECT 1 FROM ".$_POST['formName']);
+
+	$sqlDatas = array();
+
+	$sqlDatas['PrimaryKey']['type'] = "VARCHAR(255)";
+
+	$sqlDatas['PrimaryKey']['content'] = $_POST['keys']['key'];
+
+	foreach($_POST['keys']['value'] as $value){
+
+		$pair = explode(":",$value);
+
+		$sqlDatas[$pair[0]]['type'] = "VARCHAR(255)";
+
+		$sqlDatas[$pair[0]]['content'] = $pair[1];
+
+	}
+
+	foreach($_POST['keys']['count'] as $count){
+
+		$pair = explode(":",$count);
+
+		$sqlDatas[$pair[0]]['type'] = "INT";
+
+		$sqlDatas[$pair[0]]['content'] = $pair[1];
+
+	}
+
+	if(!$table_exists){
+
+		$columns = array();
+
+		foreach($sqlDatas as $key=>$data){
+
+			array_push($columns," ".$key." ".$data['type']);
+
+		}
+
+		$columns = implode(",",$columns);
+
+		mysql_query("CREATE TABLE ".$_POST['formName']." (".$columns.")");
+
+	}
+
+	$insertData = array();
+
+	foreach($sqlDatas as $data){
+
+		if($data['type'] == 'INT'){
+
+			array_push($insertData, " ".$data['content']);
+
+		}else{
+
+			array_push($insertData, " '".$data['content']."'");
+	
+		}
+
+	}
+
+	$insertData = implode(",",$insertData);
+
+	echo $insertData;
+
+	mysql_query("INSERT INTO ".$_POST['formName']." VALUES (".$insertData.")");
 	
 	$path = '../'.$config->myXML_directory_path;
 	
-	mkdir($path.'/');
+	if(!file_exists($path.'/')) mkdir($path.'/');
 	
-	mkdir($path.'/'.$_POST['formName'].'/');
+	if(!file_exists($path.'/'.$_POST['formName'].'/')) mkdir($path.'/'.$_POST['formName'].'/');
 	
 	$path = $path.'/'.$_POST['formName'].'/'.$_POST['keys']['key'].'.xml';
 	
