@@ -26,7 +26,7 @@ function fetch(node,json){
 					
 					json[$(this).attr('name')] = new Object();
 	
-					json = fetch(this,json[$(this).attr('name')]);
+					json[$(this).attr('name')] = fetch(this,json[$(this).attr('name')]);
 	
 				}else{
 		
