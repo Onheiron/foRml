@@ -30,7 +30,7 @@ WHAT TO DO:
         </form>
         
     
-- Configure your DB editing the php/config.xml file with hostname, user, password / DB name, Table name
+- Configure your DB editing the config.xml file with hostname, user, password / DB name, Table name
 
 - Here you go! On submitting your form a new .xml file will be created in the xml/ directory and a row will be
   added to your DB with those datas you specified as important with the data-base="..." attribute where "value"
