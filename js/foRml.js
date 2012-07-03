@@ -88,7 +88,7 @@ $(document).ready(function(){
 
 		myJSON.datas = fetch(this,myJSON.datas);
 		
-		$.post('php/script.php',myJSON,function(data){alert(data);});
+		$.post('php/foRml.php',myJSON,function(data){alert(data);});
 
 	});
 
