@@ -9,24 +9,26 @@ WHAT TO DO:
 
 - Write your html form in this format:
 
-        form name="xmlRootTagName" data-detect="true"
+
+        <form name="xmlRootTagName" data-detect="true">
     
-            input name="myFirstElementTagName" data-base="value"/
-            input name="mySecondElementTagName" data-base="value"/
+            <input name="myFirstElementTagName" data-base="value"/>
+            <input name="mySecondElementTagName" data-base="value"/>
         
-            fieldset name="myFirstNestedElementsRootTagName"
+            <fieldset name="myFirstNestedElementsRootTagName">
         
-                input name="myFirstNestedElementTagName"/
-                input name="mySecondNestedElementTagName"/
+                <input name="myFirstNestedElementTagName"/>
+                <input name="mySecondNestedElementTagName"/>
         
-            /fieldset
+            </fieldset>
         
-            input name="myListElement" data-base="count"/
-            input name="myListElement"/
+            <input name="myListElement" data-base="count"/>
+            <input name="myListElement"/>
     
-            input type="submit"
+            <input type="submit"/>
     
-        /form
+        </form>
+        
     
 - Configure your DB editing the php/config.xml file with hostname, user, password / DB name, Table name
 
