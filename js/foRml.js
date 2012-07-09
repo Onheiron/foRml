@@ -1,45 +1,33 @@
 var myJSON = {formName:""};
 
-function fetch(node,json){
+function toJSON(node){
 
-	if($(node).children().length == 0){
-	
-		return $(node).val();
-	
-	}else{
+        if($(node).children().length == 0) return $(node).val();
 
-		$(node).children().each(function(){
-	
-			if($(this).attr('name')){
-	
-				if($(node).children("[name="+$(this).attr('name')+"]").length > 1){
-	
-					if(!json[$(this).attr('name')]) json[$(this).attr('name')] = new Array();	
-	
-					newJSON = new Object();
-					
-					newJSON = fetch(this,newJSON);
-	
-					json[$(this).attr('name')].push(newJSON);
-	
-				}else if(($(this).children(':not(option)').length > 0)){
-					
-					json[$(this).attr('name')] = new Object();
-	
-					json[$(this).attr('name')] = fetch(this,json[$(this).attr('name')]);
-	
-				}else{
-		
-					json[$(this).attr('name')] = $(this).val();	
-	
-				}
-	
-			}			
-	
-		});	
-		
-	}
-	
+	var json = new Object();
+
+	$(node).children("[name]").each(function(){
+
+		name = $(this).attr('name');
+
+		if($(node).children("[name="+name+"]").length > 1){
+
+			if(!json[name]) json[name] = [];
+
+			json[name].push(toJSON(this));
+
+		}else if(($(this).children(':not(option)').length > 0)){
+
+			json[name] = toJSON(this);
+
+		}else{
+
+			json[name] = $(this).val();	
+
+		}			
+
+	});	
+
 	return json;
 
 }
@@ -84,9 +72,7 @@ $(document).ready(function(){
 
 		e.preventDefault();
 
-		myJSON.datas = new Object();
-
-		myJSON.datas = fetch(this,myJSON.datas);
+		myJSON.datas = toJSON(this);
 		
 		$.post('php/foRml.php',myJSON,function(data){alert(data);});
 
