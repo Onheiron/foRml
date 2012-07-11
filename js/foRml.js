@@ -3,26 +3,28 @@ var myJSON = {formName:""};
 (function( $ ) {
 
   $.fn.toJSON = function() {
-  
+
     if(!this.children().length) return this.val();
 
 	var json = new Object();
 
 	this.children('[name]').each(function(){
 
-		if($(this).siblings("[name="+$(this).attr('name')+"]").length){
+		name = $(this).attr('name');
 
-			if(!json[$(this).attr('name')]) json[$(this).attr('name')] = [];
+		if($(this).siblings("[name="+name+"]").length){
 
-			json[$(this).attr('name')].push($(this).toJSON());
+			if(!json[name]) json[name] = [];
+
+			json[name].push($(this).toJSON());
 
 		}else if($(this).children('[name]').length){
 
-			json[$(this).attr('name')] = $(this).toJSON();
+			json[name] = $(this).toJSON();
 
 		}else{
 
-			json[$(this).attr('name')] = $(this).val();	
+			json[name] = $(this).val();	
 
 		}			
 
@@ -33,7 +35,7 @@ var myJSON = {formName:""};
   };
 })( jQuery );
 
-function getSQLParams(){
+function getSQLParams(json){
 
 	json['count'] = new Array();
 		
@@ -66,8 +68,6 @@ $(document).ready(function(){
 	$("form[data-detect]").submit(function(e){
 
 		e.preventDefault();
-
-		$(this).validate();
 
 		myJSON.formName = $(this).attr('name');
 		
