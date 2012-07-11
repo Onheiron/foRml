@@ -10,21 +10,19 @@ var myJSON = {formName:""};
 
 	this.children('[name]').each(function(){
 
-		name = $(this).attr('name');
+		if($(this).siblings("[name="+$(this).attr('name')+"]").length){
 
-		if($(this).siblings("[name="+name+"]").length){
+			if(!json[$(this).attr('name')]) json[$(this).attr('name')] = [];
 
-			if(!json[name]) json[name] = [];
-
-			json[name].push($(this).toJSON());
+			json[$(this).attr('name')].push($(this).toJSON());
 
 		}else if($(this).children('[name]').length){
 
-			json[name] = $(this).toJSON();
+			json[$(this).attr('name')] = $(this).toJSON();
 
 		}else{
 
-			json[name] = $(this).val();	
+			json[$(this).attr('name')] = $(this).val();	
 
 		}			
 
