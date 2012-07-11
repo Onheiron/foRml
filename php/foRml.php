@@ -2,8 +2,7 @@
 
 	$config = simplexml_load_file('../config.xml');
 	
-	mysql_connect($config->data_base->myHost, $config->data_base->myUser, $config->data_base->myPassword) or die(mysql_error());
-	mysql_select_db($config->data_base->myDatabase_name) or die(mysql_error());
+	$dbh = new PDO('mysql:host='.$config->data_base->myHost.';dbname='.$config->data_base->myDatabase_name, $config->data_base->myUser, $config->data_base->myPassword);
 
 	function arrayToXML($array,$parent,$xml=null){
 	
@@ -55,7 +54,13 @@
 
 	$xml = arrayToXML($_POST['datas'],$_POST['formName']);
 
-	$table_exists = mysql_query("SELECT 1 FROM ".$_POST['formName']);
+	$stmt = $dbh->prepare("SELECT 1 FROM :table");
+
+	$stmt->bindParam(':table', $_POST['formName']);
+	
+	$stmt->execute();
+
+	$count = $stmt->rowCount();
 
 	$sqlDatas = array();
 
@@ -83,7 +88,7 @@
 
 	}
 
-	if(!$table_exists){
+	if($count>0){
 
 		$columns = array();
 
@@ -95,7 +100,11 @@
 
 		$columns = implode(",",$columns);
 
-		mysql_query("CREATE TABLE ".$_POST['formName']." (".$columns.")");
+		$create = $dbh->prepare("CREATE TABLE :table(:columns)");
+		$create->bindParam(':table', $_POST['formName']);
+		$create->bindParam(':columns', $columns);
+		$create->execute();
+		
 
 	}
 
@@ -119,7 +128,12 @@
 
 	echo $insertData;
 
-	mysql_query("INSERT INTO ".$_POST['formName']." VALUES (".$insertData.")");
+	$insert = $dbh->prepare("INSERT INTO :table VALUES (:columns)");
+	$insert->bindParam(':table', $_POST['formName']);
+	$insert->bindParam(':columns', $insertData);
+	echo $insert->debugDumpParams();
+	$insert->execute();
+
 	
 	$path = '../'.$config->myXML_directory_path;
 	

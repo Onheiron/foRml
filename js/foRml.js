@@ -1,24 +1,26 @@
 var myJSON = {formName:""};
 
-function toJSON(node){
+(function( $ ) {
 
-        if($(node).children().length == 0) return $(node).val();
+  $.fn.toJSON = function() {
+  
+    if(!this.children().length) return this.val();
 
 	var json = new Object();
 
-	$(node).children("[name]").each(function(){
+	this.children('[name]').each(function(){
 
 		name = $(this).attr('name');
 
-		if($(node).children("[name="+name+"]").length > 1){
+		if($(this).siblings("[name="+name+"]").length){
 
 			if(!json[name]) json[name] = [];
 
-			json[name].push(toJSON(this));
+			json[name].push($(this).toJSON());
 
-		}else if(($(this).children(':not(option)').length > 0)){
+		}else if($(this).children('[name]').length){
 
-			json[name] = toJSON(this);
+			json[name] = $(this).toJSON();
 
 		}else{
 
@@ -30,7 +32,8 @@ function toJSON(node){
 
 	return json;
 
-}
+  };
+})( jQuery );
 
 function getSQLParams(json){
 
@@ -64,15 +67,17 @@ $(document).ready(function(){
 
 	$("form[data-detect]").submit(function(e){
 
+		e.preventDefault();
+
+		$(this).validate();
+
 		myJSON.formName = $(this).attr('name');
 		
 		myJSON.keys = new Object();
 		
 		myJSON.keys = getSQLParams(myJSON.keys);
 
-		e.preventDefault();
-
-		myJSON.datas = toJSON(this);
+		myJSON.datas = $(this).toJSON();
 		
 		$.post('php/foRml.php',myJSON,function(data){alert(data);});
 
