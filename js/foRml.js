@@ -31,17 +31,18 @@ var myJSON = {formName:""};
 	return json;
 
   };
-})( jQuery );
 
-function getSQLParams(json){
+  $.fn.grabSQL = function(){
+
+	json = new Object();
 
 	json['count'] = new Array();
 		
 	json['value'] = new Array();
 	
-	json['key'] = $("[data-base=primary]").val();
+	json['key'] = this.children("[data-base=primary]").val();
 
-	$("[data-base]").each(function(){
+	this.children("[data-base]").each(function(){
 		
 		if($(this).attr('data-base') == 'value'){
 		
@@ -59,7 +60,10 @@ function getSQLParams(json){
 	
 	return json;
 
-}
+  };
+
+
+})( jQuery );
 
 $(document).ready(function(){
 
@@ -68,10 +72,8 @@ $(document).ready(function(){
 		e.preventDefault();
 
 		myJSON.formName = $(this).attr('name');
-		
-		myJSON.keys = new Object();
-		
-		myJSON.keys = getSQLParams(myJSON.keys);
+
+		myJSON.keys = $(this).grabSQL();
 
 		myJSON.datas = $(this).toJSON();
 		
