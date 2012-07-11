@@ -1,11 +1,11 @@
 <?php
 
 	$config = simplexml_load_file('../config.xml');
-	
+
 	$dbh = new PDO('mysql:host='.$config->data_base->myHost.';dbname='.$config->data_base->myDatabase_name, $config->data_base->myUser, $config->data_base->myPassword);
 
 	function arrayToXML($array,$parent,$xml=null){
-	
+
 		$index = 0;
 
 		if($xml == null){
@@ -41,7 +41,7 @@
 			}
 
 		}else{
-		
+
 			$index = ($xml->$parent->count())-1;
 
 			$xml->$parent->$index = $array;
@@ -57,10 +57,10 @@
 	$stmt = $dbh->prepare("SELECT 1 FROM :table");
 
 	$stmt->bindParam(':table', $_POST['formName']);
-	
+
 	$stmt->execute();
 
-	$count = $stmt->rowCount();
+	$exists = $stmt->rowCount();
 
 	$sqlDatas = array();
 
@@ -88,7 +88,7 @@
 
 	}
 
-	if($count>0){
+	if(!$exists){
 
 		$columns = array();
 
@@ -100,11 +100,9 @@
 
 		$columns = implode(",",$columns);
 
-		$create = $dbh->prepare("CREATE TABLE :table(:columns)");
-		$create->bindParam(':table', $_POST['formName']);
-		$create->bindParam(':columns', $columns);
+		$create = $dbh->prepare("CREATE TABLE ".$_POST['formName']." (".$columns.")");
 		$create->execute();
-		
+
 
 	}
 
@@ -119,7 +117,7 @@
 		}else{
 
 			array_push($insertData, " '".$data['content']."'");
-	
+
 		}
 
 	}
@@ -128,23 +126,20 @@
 
 	echo $insertData;
 
-	$insert = $dbh->prepare("INSERT INTO :table VALUES (:columns)");
-	$insert->bindParam(':table', $_POST['formName']);
-	$insert->bindParam(':columns', $insertData);
-	echo $insert->debugDumpParams();
+	$insert = $dbh->prepare("INSERT INTO ".$_POST['formName']." VALUES (".$insertData.")");
 	$insert->execute();
 
-	
+
 	$path = '../'.$config->myXML_directory_path;
-	
+
 	if(!file_exists($path.'/')) mkdir($path.'/');
-	
+
 	if(!file_exists($path.'/'.$_POST['formName'].'/')) mkdir($path.'/'.$_POST['formName'].'/');
-	
+
 	$path = $path.'/'.$_POST['formName'].'/'.$_POST['keys']['key'].'.xml';
-	
+
 	$handler = fopen($path,'w');
-	
+
 	fwrite($handler,$xml->asXML());
 
 	echo $xml->asXML();
