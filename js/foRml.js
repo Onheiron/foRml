@@ -10,19 +10,25 @@ var myJSON = {formName:""};
 
 	this.children('[name]').each(function(){
 
-		if($(this).siblings("[name="+$(this).attr('name')+"]").length){
+		name = $(this).attr('name');
+		type = $(this).attr('type');
 
-			if(!json[$(this).attr('name')]) json[$(this).attr('name')] = [];
+		if($(this).siblings("[name="+name+"]").length){
 
-			json[$(this).attr('name')].push($(this).toJSON());
+			if( type == 'checkbox' && !$(this).prop('checked')) return true;
+			if( type == 'radio' && !$(this).prop('checked')) return true;
+
+			if(!json[name]) json[name] = [];
+
+			json[name].push($(this).toJSON());
 
 		}else if($(this).children('[name]').length){
 
-			json[$(this).attr('name')] = $(this).toJSON();
+			json[name] = $(this).toJSON();
 
 		}else{
 
-			json[$(this).attr('name')] = $(this).val();	
+			json[name] = $(this).val();	
 
 		}			
 

@@ -19,4 +19,6 @@
 	$path = '../'.$config->myXML_directory_path;
 	saveXML($xml,$path,$_POST['formName'],$_POST['keys']['key']);
 
+	echo $xml->asXML();
+
 ?>
