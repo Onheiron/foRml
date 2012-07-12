@@ -10,8 +10,8 @@ var myJSON = {formName:""};
 
 	this.children('[name]').each(function(){
 
-		name = $(this).attr('name');
-		type = $(this).attr('type');
+		var name = $(this).attr('name');
+		var type = $(this).attr('type');
 
 		if($(this).siblings("[name="+name+"]").length){
 
