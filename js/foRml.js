@@ -1,12 +1,12 @@
-var myJSON = {formName:""};
+var myJSO = {formName:""};
 
 (function( $ ) {
 
-	$.fn.toJSON = function() {
+	$.fn.toJSO = function() {
 
 		if(!this.children('[name]').length) return this.val();
 
-		var json = new Object();
+		var jso = new Object();
 
 		this.children('[name]').each(function(){
 
@@ -18,19 +18,19 @@ var myJSON = {formName:""};
 				if( type == 'checkbox' && !$(this).prop('checked')) return true;
 				if( type == 'radio' && !$(this).prop('checked')) return true;
 
-				if(!json[name]) json[name] = [];
+				if(!jso[name]) jso[name] = [];
 
-				json[name].push($(this).toJSON());
+				jso[name].push($(this).toJSO());
 
 			}else{
 
-				json[name] = $(this).toJSON();
+				jso[name] = $(this).toJSO();
 
 			}		
 
 		});	
 
-		return json;
+		return jso;
 	};
 
 	$.fn.grabSQL = function(){
@@ -72,13 +72,13 @@ $(document).ready(function(){
 
 		e.preventDefault();
 
-		myJSON.formName = $(this).attr('name');
+		myJSO.formName = $(this).attr('name');
 
-		myJSON.keys = $(this).grabSQL();
+		myJSO.keys = $(this).grabSQL();
 
-		myJSON.datas = $(this).toJSON();
+		myJSO.datas = $(this).toJSO();
 		
-		$.post('php/foRml.php',myJSON,function(data){alert(data);});
+		$.post('php/foRml.php',myJSO,function(data){alert(data);});
 
 	});
 
