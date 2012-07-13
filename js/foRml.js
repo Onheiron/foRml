@@ -2,71 +2,66 @@ var myJSON = {formName:""};
 
 (function( $ ) {
 
-  $.fn.toJSON = function() {
+	$.fn.toJSON = function() {
 
-    if(!this.children().length) return this.val();
+		if(!this.children('[name]').length) return this.val();
 
-	var json = new Object();
+		var json = new Object();
 
-	this.children('[name]').each(function(){
+		this.children('[name]').each(function(){
 
-		var name = $(this).attr('name');
-		var type = $(this).attr('type');
+			var name = $(this).attr('name');
+			var type = $(this).attr('type');
 
-		if($(this).siblings("[name="+name+"]").length){
+			if($(this).siblings("[name="+name+"]").length){
 
-			if( type == 'checkbox' && !$(this).prop('checked')) return true;
-			if( type == 'radio' && !$(this).prop('checked')) return true;
+				if( type == 'checkbox' && !$(this).prop('checked')) return true;
+				if( type == 'radio' && !$(this).prop('checked')) return true;
 
-			if(!json[name]) json[name] = [];
+				if(!json[name]) json[name] = [];
 
-			json[name].push($(this).toJSON());
+				json[name].push($(this).toJSON());
 
-		}else if($(this).children('[name]').length){
+			}else{
 
-			json[name] = $(this).toJSON();
+				json[name] = $(this).toJSON();
 
-		}else{
+			}		
 
-			json[name] = $(this).val();	
+		});	
 
-		}			
+		return json;
+	};
 
-	});	
+	$.fn.grabSQL = function(){
 
-	return json;
+		json = new Object();
 
-  };
-
-  $.fn.grabSQL = function(){
-
-	json = new Object();
-
-	json['count'] = new Array();
+		json['count'] = new Array();
 		
-	json['value'] = new Array();
+		json['value'] = new Array();
 	
-	json['key'] = this.children("[data-base=primary]").val();
+		json['key'] = this.children("[data-base=primary]").val();
 
-	this.children("[data-base]").each(function(){
+		this.children("[data-base]").each(function(){
 		
-		if($(this).attr('data-base') == 'value'){
+			if($(this).attr('data-base') == 'value'){
 		
-			json['value'].push($(this).attr('name')+":"+$(this).val());
+				json['value'].push($(this).attr('name')+":"+$(this).val());
 		
-		}else if($(this).attr('data-base') == 'count'){
+			}else if($(this).attr('data-base') == 'count'){
 		
-			count = $("[name=" + $(this).attr('name') + "]").length;
+				count = $("[name=" + $(this).attr('name') + "]").length;
 			
-			json['count'].push($(this).attr('name')+":"+count);
+				json['count'].push($(this).attr('name')+":"+count);
 		
-		}
+			}
 	
-	});
+		});
 	
-	return json;
+		return json;
 
-  };
+	};
 
 
 })( jQuery );
