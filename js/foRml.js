@@ -1,80 +1,84 @@
-var myJSON = {formName:""};
+var myJSO = {formName:""};
 
-function fetch(node){
+(function( $ ) {
 
-	var json = new Object();
+	$.fn.toJSO = function() {
 
-	$(node).children("[name]").each(function(){
+		if(!this.children('[name]').length) return this.val();
+
+		var jso = new Object();
+
+		this.children('[name]').each(function(){
+
+			var name = $(this).attr('name');
+			var type = $(this).attr('type');
+
+			if($(this).siblings("[name="+name+"]").length){
+
+				if( type == 'checkbox' && !$(this).prop('checked')) return true;
+				if( type == 'radio' && !$(this).prop('checked')) return true;
+
+				if(!jso[name]) jso[name] = [];
+
+				jso[name].push($(this).toJSO());
+
+			}else{
+
+				jso[name] = $(this).toJSO();
+
+			}		
+
+		});	
+
+		return jso;
+	};
+
+	$.fn.grabSQL = function(){
+
+		json = new Object();
+
+		json['count'] = new Array();
+		
+		json['value'] = new Array();
 	
-		name = $(this).attr('name');
+		json['key'] = this.children("[data-base=primary]").val();
 
-		if($(node).children("[name="+name+"]").length > 1){
-
-			if(!json[name]) json[name] = [];
-
-			json[name].push(fetch(this));
-
-		}else if(($(this).children(':not(option)').length > 0)){
-
-			json[name] = fetch(this);
-
-		}else{
-
-			json[name] = $(this).val();	
-
-		}			
-
-	});	
-	
-	if($(node).children().length == 0) return $(node).val();
-	
-	return json;
-
-}
-
-function getSQLParams(json){
-
-	json['count'] = new Array();
+		this.children("[data-base]").each(function(){
 		
-	json['value'] = new Array();
-	
-	json['key'] = $("[data-base=primary]").val();
-
-	$("[data-base]").each(function(){
+			if($(this).attr('data-base') == 'value'){
 		
-		if($(this).attr('data-base') == 'value'){
+				json['value'].push($(this).attr('name')+":"+$(this).val());
 		
-			json['value'].push($(this).attr('name')+":"+$(this).val());
+			}else if($(this).attr('data-base') == 'count'){
 		
-		}else if($(this).attr('data-base') == 'count'){
-		
-			count = $("[name=" + $(this).attr('name') + "]").length;
+				count = $("[name=" + $(this).attr('name') + "]").length;
 			
-			json['count'].push($(this).attr('name')+":"+count);
+				json['count'].push($(this).attr('name')+":"+count);
 		
-		}
+			}
 	
-	});
+		});
 	
-	return json;
+		return json;
 
-}
+	};
+
+
+})( jQuery );
 
 $(document).ready(function(){
 
 	$("form[data-detect]").submit(function(e){
 
-		myJSON.formName = $(this).attr('name');
-		
-		myJSON.keys = new Object();
-		
-		myJSON.keys = getSQLParams(myJSON.keys);
-
 		e.preventDefault();
 
-		myJSON.datas = fetch(this);
+		myJSO.formName = $(this).attr('name');
+
+		myJSO.keys = $(this).grabSQL();
+
+		myJSO.datas = $(this).toJSO();
 		
-		$.post('php/foRml.php',myJSON,function(data){alert(data);});
+		$.post('php/foRml.php',myJSO,function(data){alert(data);});
 
 	});
 
