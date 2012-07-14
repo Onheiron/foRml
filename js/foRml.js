@@ -1,84 +1,84 @@
-var myJSO = {formName:""};
-
 (function( $ ) {
 
 	$.fn.toJSO = function() {
 
-		if(!this.children('[name]').length) return this.val();
+		if(!this.children('[name]').length) return this.val()
 
-		var jso = new Object();
+		var jso = new Object()
 
 		this.children('[name]').each(function(){
 
-			var name = $(this).attr('name');
-			var type = $(this).attr('type');
+			var name = $(this).attr('name')
+			var type = $(this).attr('type')
 
 			if($(this).siblings("[name="+name+"]").length){
 
-				if( type == 'checkbox' && !$(this).prop('checked')) return true;
-				if( type == 'radio' && !$(this).prop('checked')) return true;
+				if( type == 'checkbox' && !$(this).prop('checked')) return true
+				if( type == 'radio' && !$(this).prop('checked')) return true
 
-				if(!jso[name]) jso[name] = [];
+				if(!jso[name]) jso[name] = []
 
-				jso[name].push($(this).toJSO());
+				jso[name].push($(this).toJSO())
 
 			}else{
 
-				jso[name] = $(this).toJSO();
+				jso[name] = $(this).toJSO()
 
 			}		
 
-		});	
+		})
 
-		return jso;
-	};
+		return jso
+	}
 
 	$.fn.grabSQL = function(){
 
-		json = new Object();
+		json = new Object()
 
-		json['count'] = new Array();
+		json['count'] = new Array()
 		
-		json['value'] = new Array();
+		json['value'] = new Array()
 	
-		json['key'] = this.children("[data-base=primary]").val();
+		json['key'] = this.children("[data-base=primary]").val()
 
 		this.children("[data-base]").each(function(){
 		
 			if($(this).attr('data-base') == 'value'){
 		
-				json['value'].push($(this).attr('name')+":"+$(this).val());
+				json['value'].push($(this).attr('name')+":"+$(this).val())
 		
 			}else if($(this).attr('data-base') == 'count'){
 		
-				count = $("[name=" + $(this).attr('name') + "]").length;
+				count = $("[name=" + $(this).attr('name') + "]").length
 			
-				json['count'].push($(this).attr('name')+":"+count);
+				json['count'].push($(this).attr('name')+":"+count)
 		
 			}
 	
-		});
+		})
 	
-		return json;
+		return json
 
 	};
 
 
-})( jQuery );
+})( jQuery )
 
 $(document).ready(function(){
 
+	var myJSO = new Object()
+
 	$("form[data-detect]").submit(function(e){
 
-		e.preventDefault();
+		e.preventDefault()
 
-		myJSO.formName = $(this).attr('name');
+		myJSO.formName = $(this).attr('name')
 
-		myJSO.keys = $(this).grabSQL();
+		myJSO.keys = $(this).grabSQL()
 
-		myJSO.datas = $(this).toJSO();
-		
-		$.post('php/foRml.php',myJSO,function(data){alert(data);});
+		myJSO.datas = $(this).toJSO()
+		alert("CIAO");
+		$.post('php/foRml.php',myJSO,function(data){alert(data)})
 
 	});
 
